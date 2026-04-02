@@ -1,4 +1,4 @@
-The blood smear has noticeable color variation inside many erythrocytes, especially pale centers, and that can confuse a simple intensity mask. To reduce that problem, the updated pipeline uses several new steps:
+This code follows the procedure listed below:
 
 1. A color-aware mask is built from HSV saturation plus grayscale intensity.
    Saturation helps detect stained cell rims, while grayscale still helps recover darker cell interiors.
@@ -15,20 +15,16 @@ The blood smear has noticeable color variation inside many erythrocytes, especia
 5. Cell measurements are calculated after watershed labeling.
    The labeled regions are screened for possible sickle-cell morphology using aspect ratio, eccentricity, solidity, and axis-length differences.
 
-This method was added specifically to improve cell separation when neighboring erythrocytes have different colors in the middle of the cell.
-
 ## Image comparison
 
-### Original blood smear
+Original blood smear
 
 ![Original blood smear](BloodSmear.jpg)
 
 This image is the raw microscope view of the blood smear. Most erythrocytes appear round or slightly oval, while a smaller number show the elongated crescent-like shape associated with sickle cell disease.
 
-### Processed candidate detection image
+Processed candidate detection image
 
 ![Detected sickle-cell candidates](outputs/sickle_cell_candidates.png)
 
-This processed image shows the result of the updated segmentation and measurement pipeline. Light blue boxes mark detected cell objects, while the red and orange boxes highlight cells that were flagged as possible sickle-cell candidates because they have a larger aspect ratio and more elongated shape.
-
-The original image is useful for visual inspection because it preserves the color and natural appearance of the smear, but it does not clearly separate individual cells or quantify their shapes. The processed image simplifies the scene into measurable objects and adds labels to cells that match the notebook's sickle-cell criteria, making it easier to compare morphology across the smear. The newer boundary-based watershed method also handles central color variation better than the earlier grayscale-only mask, although overlapping cells and imperfect boundaries can still cause some segmentation errors.
+As you can see, this obviously has room for improvement, and other identification features can be addded, especially if you want to track polychromatophilic RBCs, target cells, or Howell-Jolly bodies.
